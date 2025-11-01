@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Христианский тест</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<style>
+body {
+    background: linear-gradient(180deg, #0b1d3a 0%, #1a2a5a 100%);
+    font-family: 'Arial', sans-serif;
+    margin: 0; padding: 0;
+    overflow-x: hidden;
+    position: relative;
+    color: #fff;
+}
+
+/* ---------- Звезды ---------- */
+.star {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background: radial-gradient(circle, #fff, #ffd700);
+    border-radius: 50%;
+    opacity: 0;
+    animation: twinkle 3s infinite;
+}
+@keyframes twinkle {
+    0%,100% { opacity: 0; transform: scale(0.5); }
+    50% { opacity: 1; transform: scale(1.2); }
+}
+
+/* ---------- Плавающие изображения ---------- */
+.floating-img {
+    position: absolute;
+    width: 50px;
+    animation: floatUpDown 5s ease-in-out infinite;
+}
+@keyframes floatUpDown {
+    0%,100% { transform: translateY(0); }
+    50% { transform: translateY(-15px); }
+}
+
+/* ---------- Основная структура ---------- */
+.main-container {
+    display: flex; flex-wrap: wrap; gap: 20px; margin: 20px;
+}
+
+.left-col {
+    flex: 1 1 300px; text-align: center;
+}
+
+.left-col img {
+    max-width: 100%;
+    border-radius: 25px;
+    box-shadow: 0 0 30px rgba(255, 215, 0,0.4);
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+.left-col img:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 45px rgba(255, 215, 0,0.7);
+}
+
+.center-col {
+    flex: 1 1 400px;
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+    padding: 40px 30px;
+    border-radius: 25px;
+    box-shadow: 0 12px 30px rgba(0,0,0,0.5);
+    text-align: center;
+    color: #ffeaa7;
+}
+
+.center-col h1 {
+    font-size: 2rem;
+    margin: 20px 0;
+    color: #fff6c3;
+    text-shadow: 0 0 10px rgba(255,255,255,0.6), 0 0 20px rgba(255, 215, 0,0.3);
+}
+
+.btn-custom {
+    background: linear-gradient(135deg, rgba(255, 215, 0,0.8), rgba(255, 235, 130,0.8));
+    color: #0b1d3a;
+    border: none;
+    padding: 15px 40px;
+    font-weight: bold;
+    font-size: 1.3rem;
+    border-radius: 20px;
+    box-shadow: 0 8px 25px rgba(255,215,0,0.4);
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+.btn-custom:hover {
+    transform: scale(1.08);
+    box-shadow: 0 12px 30px rgba(255,215,0,0.6);
+}
+
+/* Правая колонка */
+.right-col {
+    flex: 1 1 350px;
+    display: flex; flex-direction: column; gap: 25px;
+}
+.sidebar {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+    padding: 30px 25px;
+    border-radius: 25px;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.4);
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
+}
+.sidebar:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+}
+.sidebar h5 {
+    margin-bottom: 15px; font-weight: bold;
+    color: #ffeaa7; font-size: 1.3rem;
+    border-bottom: 2px solid rgba(255,215,0,0.6);
+    padding-bottom: 8px;
+}
+.sidebar p {
+    margin-bottom: 12px; line-height: 1.6; color: #fff6c3;
+}
+
+/* Футер */
+.footer {
+    text-align: center; margin: 50px 0; padding: 25px;
+    background-color: rgba(0,0,0,0.3); border-top: 1px solid rgba(255,255,255,0.2);
+    font-size: 0.95rem; color: #fff6c3;
+}
+
+/* Адаптив */
+@media (max-width: 1024px) {
+    .main-container { flex-direction: column; }
+    .right-col { flex-direction: column; }
+}
+
+/* Летающий ангел */
+#flying-angel {
+    position: absolute;
+    width: 50px;
+    max-width: 15%;
+    display: none;
+    transition: transform 0.5s, opacity 0.5s;
+    z-index: 10;
+}
+
+#house-container {
+    position: relative;
+    width: 300px;
+    margin: 50px auto;
+}
+</style>
+</head>
+<body>
+
+<!-- Звезды -->
+<div class="star" style="top:10%; left:20%; animation-delay:0s;"></div>
+<div class="star" style="top:30%; left:60%; animation-delay:1s;"></div>
+<div class="star" style="top:50%; left:40%; animation-delay:2s;"></div>
+<div class="star" style="top:70%; left:80%; animation-delay:1.5s;"></div>
+
+<!-- Плавающие снежинки -->
+<img src="/static/snowflake.png" class="floating-img" style="top:40%; left:70%;">
+
+<!-- Домик (ангел летает над ним) -->
+<div id="house-container">
+    <div class="left-col">
+    <img src="/static/jesus.png" alt="Христос">
+</div>
+    <img src="/static/angel.png" id="flying-angel" alt="Ангел">
+</div>
+
+<!-- Левая колонка с Христом -->
+
+
+<!-- Основной контент -->
+<div class="main-container">
+    <div class="center-col">
+        <img src="/static/13-bible.png" alt="Библия" style="max-width:100px; box-shadow: 0 0 25px rgba(255, 215, 0,0.5);">
+        <div class="golden-verse mb-3" style="font-style: italic;">
+            “И всё, что делаете, делайте от души, как для Господа” (Кол. 3:23)
+        </div>
+        <h1>Добро пожаловать на тест о Рождестве Христовом!</h1>
+        <p>Здесь ты сможешь проверить, что ты знаешь о рождении Спасителя и событиях, которые его сопровождали.</p>
+        <p>Удачи — отвечай внимательно и от сердца!</p>
+        <a href="/test" class="btn btn-custom btn-lg mt-3">Начать тест</a>
+    </div>
+
+    <div class="right-col">
+        <div class="sidebar">
+            <h5>Информация о тесте</h5>
+            <p>Возделывайте и наполняйте свои знания о слове Божьем и укрепите свою веру. Каждый вопрос помогает глубже понять Слово Божье.</p>
+        </div>
+        <div class="sidebar">
+            <h5>Баптистская Церковь «Амвросиевка»</h5>
+            <p><em>«Ибо младенец родился нам — Сын дан нам; владычество на раменах Его…»</em><br>Исаия 9:6</p>
+        </div>
+    </div>
+</div>
+
+<footer class="footer">
+    &copy; 2025 Церковь Амвросиевка. Все права защищены.
+</footer>
+
+<script>
+// Летающий ангел над домиком
+const angel = document.getElementById('flying-angel');
+const house = document.getElementById('house-container');
+
+function flyAngelAboveHouse() {
+    const houseRect = house.getBoundingClientRect();
+    const minX = 0;
+    const maxX = houseRect.width - angel.offsetWidth;
+    const minY = 0;
+    const maxY = houseRect.height / 2;
+
+    const x = Math.random() * (maxX - minX) + minX;
+    const y = Math.random() * (maxY - minY) + minY;
+
+    angel.style.left = x + 'px';
+    angel.style.top = y + 'px';
+    angel.style.opacity = 0;
+    angel.style.display = 'block';
+
+    angel.animate(
+        [{opacity:0, transform:'scale(0.5)'},
+         {opacity:1, transform:'scale(1)'}],
+        {duration:500, fill:'forwards'}
+    );
+
+    const duration = 1000 + Math.random() * 2000;
+    setTimeout(() => {
+        angel.animate(
+            [{opacity:1, transform:'scale(1)'},
+             {opacity:0, transform:'scale(0.5)'}],
+            {duration:500, fill:'forwards'}
+        );
+        setTimeout(()=>{angel.style.display='none';}, 500);
+    }, duration);
+}
+
+function startFlyingAngel() {
+    flyAngelAboveHouse();
+    const nextDelay = 1000 + Math.random() * 2000;
+    setTimeout(startFlyingAngel, nextDelay);
+}
+
+startFlyingAngel();
+</script>
+
+</body>
+</html>

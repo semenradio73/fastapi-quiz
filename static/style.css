@@ -1,0 +1,151 @@
+/* ---------- Общие стили ---------- */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #fefcf5;
+    color: #333;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* ---------- Стих с золотым свечением ---------- */
+.golden-verse {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #b8860b;
+    font-style: italic;
+    animation: verseGlow 4s ease-in-out infinite alternate;
+}
+@keyframes verseGlow {
+    0%   { text-shadow: 0 0 4px rgba(255,215,0,0.4); }
+    100% { text-shadow: 0 0 14px rgba(255,215,0,0.85); }
+}
+
+/* ---------- Баннер / центральный блок с переливом ---------- */
+.hero-banner, .center-col {
+    background: linear-gradient(135deg, #fff9e6, #ffe4b5);
+    border-radius: 15px;
+    text-align: center;
+    padding: 50px 20px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    animation: bannerGlow 7s ease-in-out infinite alternate;
+}
+@keyframes bannerGlow {
+    0%   { background: linear-gradient(135deg, #fff9e6, #ffe4b5); }
+    50%  { background: linear-gradient(135deg, #ffe6b3, #ffd27a); }
+    100% { background: linear-gradient(135deg, #fff9e6, #ffe4b5); }
+}
+
+/* ---------- Кнопка с переливающимся сиянием ---------- */
+.btn-custom {
+    background-color: #b8860b;
+    color: white;
+    border: none;
+    padding: 12px 25px;
+    font-size: 1.1rem;
+    border-radius: 10px;
+    position: relative;
+    overflow: hidden;
+    transition: 0.3s;
+    cursor: pointer;
+}
+.btn-custom:hover {
+    background-color: #d4af37;
+    color: #fff;
+}
+.btn-custom::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -120%;
+    width: 250%;
+    height: 100%;
+    background: linear-gradient(120deg, transparent, rgba(255,255,255,0.8), transparent);
+    transition: transform 0.7s ease;
+}
+.btn-custom:hover::after {
+    transform: translateX(100%);
+}
+
+/* ---------- Изображение Христа с лёгким дыханием ---------- */
+.jesus-img {
+    max-width: 100%;
+    border-radius: 15px;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.2);
+    animation: breathing 6s ease-in-out infinite;
+}
+@keyframes breathing {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.03); }
+    100% { transform: scale(1); }
+}
+
+/* ---------- Сайдбар с мягким золотым переливом ---------- */
+.sidebar {
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(135deg, #fff7e6, #ffefb5);
+    border-left: 2px solid #b8860b;
+    padding: 20px;
+    width: 220px;
+    box-shadow: -3px 0 12px rgba(0,0,0,0.1);
+    text-align: center;
+    font-size: 0.9rem;
+    border-radius: 10px 0 0 10px;
+    z-index: 1000;
+    animation: sidebarGlow 6s ease-in-out infinite alternate;
+}
+@keyframes sidebarGlow {
+    0%   { background: linear-gradient(135deg, #fff7e6, #ffefb5); }
+    50%  { background: linear-gradient(135deg, #fff2c2, #ffe48f); }
+    100% { background: linear-gradient(135deg, #fff7e6, #ffefb5); }
+}
+
+/* ---------- Вопросы ---------- */
+.question-card {
+    background-color: #fff7e6;
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+.question-card p {
+    margin-bottom: 15px;
+}
+
+/* ---------- Результат ---------- */
+.result {
+    font-size: 1.3rem;
+    font-weight: 500;
+}
+
+/* ---------- Подвал ---------- */
+.footer {
+    text-align: center;
+    padding: 15px 0;
+    margin-top: 40px;
+    font-size: 0.9rem;
+    color: #777;
+    border-top: 1px solid #e0d8c1;
+}
+
+.star {
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    background: radial-gradient(circle, #fffdd0, #fff);
+    border-radius: 50%;
+    opacity: 0;
+    z-index: 0; /* чтобы быть под блоком контейнера */
+    animation: twinkle 2s infinite;
+}
+
+@keyframes twinkle {
+    0%, 100% { opacity: 0.1; transform: scale(0.5); }
+    50% { opacity: 1; transform: scale(1.3); }
+}
