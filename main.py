@@ -173,6 +173,3 @@ async def download_db():
 # ЗАПУСК
 # =========================
 
-#if __name__ == "__main__":
- #   print("Сервер запущен на http://127.0.0.1:8000")
-  #  uvicorn.run(app, host="0.0.0.0", port=8000)
