@@ -54,3 +54,17 @@ python main.py
 ```bash
 uvicorn main:app --reload
 ```
+## 🌐 Доступ к префиксам
+
+5. **Главная / авторизация:**
+
+```bash
+http://localhost:8000/test или https://<project>.up.railway.app/test
+```
+
+6. **Результаты / база данных:**
+
+```bash
+http://localhost:8000/results или https://<project>.up.railway.app/results
+```
+

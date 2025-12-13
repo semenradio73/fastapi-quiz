@@ -3,14 +3,14 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Тест с гирляндами</title>
+<title>Христианский тест</title>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 <style>
 body {
     margin: 0;
     padding: 0;
     font-family: 'Arial', sans-serif;
-    background: #0b1d3a;
+    background: linear-gradient(180deg, #0b1d3a 0%, #1a2a5a 100%);
     color: #fff;
     overflow-x: hidden;
     position: relative;
@@ -18,14 +18,16 @@ body {
 
 /* ---------- Фоновый слой ---------- */
 #background-layer {
-    position: fixed; /* фиксируем, чтобы не лагало при скролле */
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
+    position: fixed;
+    inset: 0;
+    width: 100vw;
+    height: 100vh;
     z-index: 1;
     pointer-events: none;
+    overflow: hidden;
 }
+
+
 
 /* ---------- Мерцающие звезды ---------- */
 .star {
@@ -52,23 +54,28 @@ body {
 
 /* ---------- Гирлянды ---------- */
 .garland {
-    position: absolute;
+    position: fixed;   /* ✅ ВАЖНО: фиксируем к экрану */
     display: flex;
     gap: 5px;
+    z-index: 2;
+    pointer-events: none; /* ✅ чтобы не мешали кликам */
 }
+
 .bulb {
     width: 15px;
     height: 25px;
     border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
-    box-shadow: 0 0 10px rgba(255,255,255,0.7);
+    box-shadow: 0 0 12px rgba(255,255,255,0.8);
     opacity: 0;
     transition: opacity 1s ease-in-out, transform 1s ease-in-out;
 }
+
 @keyframes sway {
     0% { transform: translateY(0); }
     50% { transform: translateY(-5px); }
     100% { transform: translateY(0); }
 }
+
 
 /* ---------- Контент теста ---------- */
 .container-full {
@@ -80,7 +87,14 @@ body {
     background: rgba(255, 255, 255, 0.05);
     backdrop-filter: blur(12px);
     border-radius: 25px;
-    box-shadow: 0 12px 35px rgba(0,0,0,0.5);
+}
+
+/* Запрет выделения текста */
+body, .container-full, .question-card, .form-check-label {
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
 }
 
 h1 {
@@ -99,6 +113,13 @@ h1 {
     border-radius: 20px;
     box-shadow: 0 8px 20px rgba(0,0,0,0.4);
 }
+
+/* ---------- Подсветка незаполненных вопросов ---------- */
+.question-card.invalid {
+    border: 2px solid #ff6666;
+    box-shadow: 0 0 10px rgba(255,102,102,0.7);
+}
+
 .form-check-label { color: #ffeaa7; }
 
 .btn-custom {
@@ -109,11 +130,11 @@ h1 {
     font-weight: bold;
     font-size: 1.1rem;
     border-radius: 15px;
-    box-shadow: 0 6px 15px rgba(255,215,0,0.4);
     display: block;
     margin: 30px auto 0;
     position: relative;
     overflow: hidden;
+    box-shadow: 0 6px 15px rgba(255,215,0,0.4);
 }
 .btn-custom::after {
     content: "";
@@ -128,7 +149,13 @@ h1 {
 .btn-custom:hover::after { transform: translateX(100%); }
 .btn-custom:hover { transform: scale(1.08); box-shadow: 0 8px 20px rgba(255,215,0,0.6); }
 
-/* ---------- Адаптив под телефон ---------- */
+#timer {
+    text-align: center;
+    font-size: 1.3rem;
+    margin-bottom: 20px;
+    color: #ffeaa7;
+}
+
 @media (max-width:768px){
     #flying-angel { width: 40px; }
     .bulb { width: 10px; height: 15px; }
@@ -155,18 +182,27 @@ h1 {
 <div class="container-full">
     <h1>Тест о Рождестве Христовом!</h1>
 
-    <form method="post" action="/submit">
+    <div id="timer">Время: <span id="timer-display">0</span> секунд</div>
+
+    <form id="testForm" method="POST" action="/submit">
         {% for q in questions %}
         <div class="question-card">
             <p class="fw-bold fs-5">{{ q.question }}</p>
             {% for opt in q.options %}
             <div class="form-check">
-                <input class="form-check-input" type="radio" name="{{ q.question }}" value="{{ opt }}" required>
+                <input class="form-check-input" type="radio" name="{{ q.question }}" value="{{ opt }}">
                 <label class="form-check-label">{{ opt }}</label>
             </div>
             {% endfor %}
         </div>
         {% endfor %}
+        <input type="hidden" name="time_elapsed" id="time_elapsed" value="0">
+
+
+        <input type="hidden" name="firstname" value="{{ user.firstname }}">
+        <input type="hidden" name="lastname" value="{{ user.lastname }}">
+        <input type="hidden" name="middlename" value="{{ user.middlename }}">
+        <input type="hidden" name="age" value="{{ user.age }}">
 
         <button type="submit" class="btn btn-custom">Отправить ответы</button>
     </form>
@@ -195,14 +231,12 @@ function showAngel() {
 }
 setInterval(showAngel, 5000 + Math.random() * 5000);
 
-// ---------- Рандомные гирлянды ----------
+// ---------- Гирлянды ----------
 const colors = ['#ff3c3c','#3cff3c','#3c3cff','#fff63c','#ff3cff'];
 const numGarlands = window.innerWidth < 768 ? 15 : 50;
-
 for(let g=0; g<numGarlands; g++){
     const garland = document.createElement('div');
     garland.classList.add('garland');
-
     const bulbsCount = 3 + Math.floor(Math.random()*7);
     for(let i=0; i<bulbsCount; i++){
         const bulb = document.createElement('div');
@@ -210,18 +244,15 @@ for(let g=0; g<numGarlands; g++){
         bulb.style.backgroundColor = colors[Math.floor(Math.random()*colors.length)];
         garland.appendChild(bulb);
     }
-
     garland.style.top = Math.random()*window.innerHeight + 'px';
     garland.style.left = Math.random()*window.innerWidth + 'px';
     garland.style.transform = `rotate(${Math.random()*60-30}deg)`;
     document.getElementById('background-layer').appendChild(garland);
 }
-
-// Мерцание лампочек
 const bulbs = document.querySelectorAll('.bulb');
 function flickerBulb(bulb){
     const delay = Math.random()*2000;
-    setTimeout(()=>{
+    setTimeout(()=> {
         bulb.style.opacity = 1;
         bulb.style.animation = `sway ${1+Math.random()}s ease-in-out infinite`;
         const duration = window.innerWidth < 768 ? 1000 + Math.random()*1000 : 500+Math.random()*1500;
@@ -233,6 +264,63 @@ function flickerBulb(bulb){
     },delay);
 }
 bulbs.forEach(bulb => flickerBulb(bulb));
+
+// ---------- Таймер ----------
+let timeLeft = 5 * 60;
+const timerDisplay = document.getElementById('timer-display');
+const timeInput = document.getElementById('time_elapsed');
+
+function updateTimer() {
+    const minutes = Math.floor(timeLeft / 60);
+    const seconds = timeLeft % 60;
+    timerDisplay.textContent = `${minutes}:${seconds.toString().padStart(2,'0')}`;
+    timeInput.value = 480 - timeLeft;
+    if (timeLeft <= 0) {
+        clearInterval(timerInterval);
+        alert("Время вышло! Тест будет отправлен автоматически.");
+        document.getElementById('testForm').submit();
+    }
+    timeLeft--;
+}
+
+const timerInterval = setInterval(updateTimer, 1000);
+
+// ---------- Проверка формы и подсветка ----------
+document.getElementById('testForm').addEventListener('submit', function(e){
+    e.preventDefault();
+
+    const questions = document.querySelectorAll('.question-card');
+    let allAnswered = true;
+
+    questions.forEach(q => {
+        const checked = q.querySelector('input[type="radio"]:checked');
+        if(!checked){
+            allAnswered = false;
+            q.classList.add('invalid');
+        } else {
+            q.classList.remove('invalid');
+        }
+    });
+
+    if(!allAnswered){
+        alert("Пожалуйста, ответьте на все вопросы!");
+        return;
+    }
+
+    clearInterval(timerInterval);
+    this.submit();
+});
+
+// ---------- Запрет копирования ----------
+document.addEventListener('contextmenu', e => e.preventDefault());
+document.addEventListener('keydown', function(e){
+    if ((e.ctrlKey && (e.key === 'c' || e.key === 's' || e.key === 'u')) ||
+        (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === 'i') ||
+        e.key === 'F12') {
+        e.preventDefault();
+        alert("Копирование запрещено!");
+    }
+});
 </script>
 
 </body>

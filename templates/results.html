@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Результаты теста</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<style>
+body {
+    margin: 0;
+    font-family: 'Arial', sans-serif;
+    background: linear-gradient(180deg, #0b1d3a 0%, #1a2a5a 100%);
+    color: #fff;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 40px 20px;
+}
+
+h1 {
+    font-size: 3rem;
+    margin-bottom: 40px;
+    text-align: center;
+    color: #fff6c3;
+    text-shadow: 0 0 12px rgba(255,255,255,0.7), 0 0 25px rgba(255, 215, 0,0.5);
+}
+
+.table-container {
+    width: 100%;
+    max-width: 1000px;
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(12px);
+    border-radius: 25px;
+    padding: 25px;
+    box-shadow: 0 10px 35px rgba(0,0,0,0.5);
+    overflow-x: auto;
+}
+
+.table {
+    margin-bottom: 0;
+    font-size: 1.2rem;
+    text-align: center;
+}
+
+.table thead {
+    background: rgba(255, 215, 0, 0.25);
+    color: #fff6c3;
+    font-size: 1.3rem;
+}
+
+.table tbody tr {
+    transition: 0.3s;
+}
+
+.table tbody tr:hover {
+    background-color: rgba(255, 215, 0, 0.15);
+}
+
+.rank-1 {
+    background: linear-gradient(90deg, #ffd700, #ffe87c);
+    font-weight: bold;
+}
+
+.rank-2 {
+    background: linear-gradient(90deg, #c0c0c0, #e0e0e0);
+    font-weight: bold;
+}
+
+.rank-3 {
+    background: linear-gradient(90deg, #cd7f32, #d9986f);
+    font-weight: bold;
+}
+
+.table th, .table td {
+    text-align: center;
+    vertical-align: middle;
+    padding: 15px 10px;
+}
+
+.footer {
+    margin-top: 60px;
+    font-size: 1.1rem;
+    color: #ffeaa7;
+    text-align: center;
+    line-height: 1.8;
+}
+
+.btn-start {
+    background: linear-gradient(45deg, #ffd700, #ffec8b, #ffc700, #ffda44);
+    background-size: 400% 400%;
+    color: #000;
+    border: none;
+    padding: 12px 30px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    border-radius: 15px;
+    cursor: pointer;
+    transition: 0.4s;
+    animation: shine 8s ease infinite;
+    margin-top: 30px;
+    box-shadow: 0 4px 15px rgba(255, 215, 0, 0.4);
+}
+
+.btn-start:hover {
+    color: #fff;
+    box-shadow: 0 6px 20px rgba(255, 215, 0, 0.6);
+}
+
+@keyframes shine {
+    0% {background-position: 0% 50%;}
+    50% {background-position: 100% 50%;}
+    100% {background-position: 0% 50%;}
+}
+</style>
+</head>
+<body>
+<h1>Все результаты теста</h1>
+
+<div class="table-container">
+    <table class="table table-striped align-middle">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>ФИО</th>
+                <th>Возраст</th>
+                <th>Баллы</th>
+                <th>Всего вопросов</th>
+                <th>Дата и время</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for r in results %}
+            <tr class="{% if r.rank == 1 %}rank-1{% elif r.rank == 2 %}rank-2{% elif r.rank == 3 %}rank-3{% endif %}">
+                <td>{{ r.rank }}</td>
+                <td>{{ r.lastname }} {{ r.firstname }} {{ r.middlename }}</td>
+                <td>{{ r.age }}</td>
+                <td>{{ r.score }}</td>
+                <td>{{ r.total }}</td>
+                <td>{{ r.timestamp.strftime('%Y-%m-%d %H:%M:%S') }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<div class="footer">
+    «Ибо так возлюбил Бог мир, что отдал Сына Своего Единородного…» — Иоанна 3:16
+</div>
+
+<button class="btn-start" onclick="clearDatabase()">
+    Очистить базу данных
+</button>
+
+<script>
+async function clearDatabase() {
+    if (!confirm("Вы уверены, что хотите очистить базу данных? Это необратимо!")) {
+        return;
+    }
+
+    const response = await fetch("/admin/clear-db", {
+        method: "DELETE"
+    });
+
+    if (response.ok) {
+        alert("База данных очищена!");
+        location.reload();
+    } else {
+        alert("Ошибка при очистке базы");
+    }
+}
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
